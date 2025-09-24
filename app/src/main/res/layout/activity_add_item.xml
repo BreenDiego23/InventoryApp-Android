@@ -1,15 +1,3 @@
-<!--
-    activity_add_item.xml
-    ---------------------
-    Layout file for the "Add Item" screen in the InventoryApp.
-    This layout provides:
-      - A title indicating the purpose of the screen.
-      - An EditText field for entering the item's name.
-      - An EditText field for specifying the quantity of the item.
-      - A button to save the new inventory item.
-    Users interact with this screen to add new items to the inventory.
--->
-<!-- Root layout using ConstraintLayout -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
