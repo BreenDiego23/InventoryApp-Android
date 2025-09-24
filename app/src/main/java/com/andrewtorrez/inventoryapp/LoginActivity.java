@@ -32,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
         createAccountButton = findViewById(R.id.createAccountButton);
+        createAccountButton.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class));
+        });
 
         // Handle login button press
         loginButton.setOnClickListener(view -> {
@@ -46,21 +49,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, InventoryActivity.class));
             } else {
                 Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Handle create account button press
-        createAccountButton.setOnClickListener(view -> {
-            String username = usernameField.getText().toString();
-            String password = passwordField.getText().toString();
-
-            // Validate input fields before attempting to create an account
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                // Add new user credentials to the database
-                dbHelper.addUser(username, password);
-                Toast.makeText(LoginActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
             }
         });
     }

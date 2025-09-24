@@ -29,6 +29,11 @@
             </intent-filter>
         </activity>
 
+        <!-- Create Account screen (child of Login) -->
+        <activity
+            android:name=".CreateAccountActivity"
+            android:parentActivityName=".LoginActivity" />
+
         <!-- Inventory screen activity -->
         <activity android:name=".InventoryActivity" />
         <!-- Add item screen activity -->

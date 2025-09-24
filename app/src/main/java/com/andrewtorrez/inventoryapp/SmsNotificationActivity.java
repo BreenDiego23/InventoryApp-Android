@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class SmsNotificationActivity extends AppCompatActivity {
 
     private static final int SMS_PERMISSION_CODE = 100; // Request code to identify SMS permission result
     private Button sendButton;
+    private EditText etPhone;
+    private EditText etThreshold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +33,41 @@ public class SmsNotificationActivity extends AppCompatActivity {
         }
 
         sendButton = findViewById(R.id.sendSmsButton);
+        etPhone = findViewById(R.id.etPhone);
+        etThreshold = findViewById(R.id.etThreshold);
 
-        // When the user clicks the "Send SMS" button
+        // Prefill UI from saved preferences so values persist between visits
+        if (etPhone != null) {
+            etPhone.setText(Prefs.getPhone(this));
+        }
+        if (etThreshold != null) {
+            etThreshold.setText(String.valueOf(Prefs.getThreshold(this)));
+        }
+
         sendButton.setOnClickListener(view -> {
-            // Check if SMS permission is granted
+            // Persist current UI values to shared preferences
+            if (etPhone != null && etPhone.getText() != null) {
+                String phone = etPhone.getText().toString().trim();
+                if (!phone.isEmpty()) {
+                    Prefs.setPhone(this, phone);
+                }
+            }
+            if (etThreshold != null && etThreshold.getText() != null) {
+                String tStr = etThreshold.getText().toString().trim();
+                try {
+                    int t = Integer.parseInt(tStr);
+                    if (t > 0) {
+                        Prefs.setThreshold(this, t);
+                    }
+                } catch (NumberFormatException ignored) { /* keep previous threshold */ }
+            }
+
+            // Check permission and send
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                     != PackageManager.PERMISSION_GRANTED) {
-                // If not granted, request it
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
             } else {
-                // If already granted, send the SMS
                 sendSms();
             }
         });
@@ -48,19 +75,20 @@ public class SmsNotificationActivity extends AppCompatActivity {
 
     // This method checks for low stock and sends an SMS with the alert
     private void sendSms() {
+        int threshold = Prefs.getThreshold(this);
         DatabaseHelper dbHelper = new DatabaseHelper(this); // Access the database
         List<InventoryItem> items = dbHelper.getAllItems(); // Get all inventory items
 
         StringBuilder messageBuilder = new StringBuilder(); // Build the message
 
         /**
-         * Loop through each item in the inventory and check if its quantity is below the threshold (currently hardcoded as 5).
+         * Loop through each item in the inventory and check if its quantity is below the user-defined threshold.
          * If so, add the item and its quantity to the SMS message.
          * This is important because it alerts the user about items that are low in stock,
          * allowing timely restocking and preventing stockouts.
          */
         for (InventoryItem item : items) {
-            if (item.getQuantity() < 5) {
+            if (item.getQuantity() < threshold) {
                 messageBuilder.append(item.getName())
                         .append(" is low (Qty: ")
                         .append(item.getQuantity())
@@ -73,7 +101,7 @@ public class SmsNotificationActivity extends AppCompatActivity {
         // Only send if there's at least one low-stock item
         if (!message.isEmpty()) {
             try {
-                String phoneNumber = "5554"; // Emulator's default test number
+                String phoneNumber = Prefs.getPhone(this);
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneNumber, null, message, null, null); // Send the SMS
                 Toast.makeText(this, "Low stock SMS sent", Toast.LENGTH_SHORT).show();
@@ -84,6 +112,26 @@ public class SmsNotificationActivity extends AppCompatActivity {
         } else {
             // If no items are low in stock, let user know
             Toast.makeText(this, "No low stock items. No SMS sent.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (etPhone != null && etPhone.getText() != null) {
+            String p = etPhone.getText().toString().trim();
+            if (!p.isEmpty()) {
+                Prefs.setPhone(this, p);
+            }
+        }
+        if (etThreshold != null && etThreshold.getText() != null) {
+            String tStr = etThreshold.getText().toString().trim();
+            try {
+                int t = Integer.parseInt(tStr);
+                if (t > 0) {
+                    Prefs.setThreshold(this, t);
+                }
+            } catch (NumberFormatException ignored) { /* keep previous value */ }
         }
     }
 

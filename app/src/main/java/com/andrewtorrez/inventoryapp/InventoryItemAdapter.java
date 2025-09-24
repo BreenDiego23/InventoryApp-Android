@@ -101,15 +101,16 @@ public class InventoryItemAdapter extends BaseAdapter {
                 quantityLabel.setText("Qty: " + item.getQuantity());
                 notifyDataSetChanged();
 
-                // Show a warning toast if stock is low
-                if (newQty < 5) {
-                    Toast.makeText(context, "Alert: Stock is low!", Toast.LENGTH_SHORT).show();
+                // Show a warning toast if stock is low based on saved threshold
+                int threshold = Prefs.getThreshold(context);
+                if (newQty < threshold) {
+                    Toast.makeText(context, "Alert: Stock is low (threshold: " + threshold + ")!", Toast.LENGTH_SHORT).show();
 
                     // Uncomment below if real SMS functionality is enabled (requires permission)
                     /*
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage("1234567890", null,
-                        "Inventory Alert: " + item.getName() + " is below 5 in stock!",
+                    smsManager.sendTextMessage(Prefs.getPhone(context), null,
+                        "Inventory Alert: " + item.getName() + " is below " + threshold + " in stock!",
                         null, null);
                     */
                 }
