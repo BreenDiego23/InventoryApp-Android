@@ -47,17 +47,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Handle create account button press
         createAccountButton.setOnClickListener(view -> {
-            String username = usernameField.getText().toString();
-            String password = passwordField.getText().toString();
-
-            // Validate input fields before attempting to create an account
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                // Add new user credentials to the database
-                dbHelper.addUser(username, password);
-                Toast.makeText(LoginActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+            startActivity(intent);
         });
     }
 }

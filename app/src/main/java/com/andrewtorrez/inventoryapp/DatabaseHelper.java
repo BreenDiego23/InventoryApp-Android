@@ -114,6 +114,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Check if a user exists with the given username
+    public boolean userExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT 1 FROM " + TABLE_USERS + " WHERE " + USERNAME + "=? LIMIT 1";
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+    // Create a new user if the username does not already exist
+    public boolean createUser(String username, String password) {
+        if (userExists(username)) {
+            return false;
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, username);
+        values.put(PASSWORD, password);
+        db.insert(TABLE_USERS, null, values);
+        db.close();
+        return true;
+    }
+
     // Add a new user to the users table
     public void addUser(String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();

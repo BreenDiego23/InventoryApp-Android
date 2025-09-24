@@ -26,6 +26,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".CreateAccountActivity"
+            android:parentActivityName=".LoginActivity" />
+
         <!-- SMS Notification Activity -->
         <activity android:name=".InventoryActivity" />
         <activity android:name=".AddItemActivity" />

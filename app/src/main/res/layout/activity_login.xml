@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize">
 
     <!-- App welcome title -->
     <TextView
@@ -16,7 +18,7 @@
         android:text="@string/welcome_to_the_inventory_app"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

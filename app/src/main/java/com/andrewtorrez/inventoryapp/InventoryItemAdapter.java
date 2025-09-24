@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
+import com.andrewtorrez.inventoryapp.utils.Prefs;
+
 import java.util.List;
 
 // Custom adapter for displaying inventory items in a GridView
@@ -94,16 +96,22 @@ public class InventoryItemAdapter extends BaseAdapter {
                 quantityLabel.setText("Qty: " + item.getQuantity());
                 notifyDataSetChanged();
 
-                // Show a warning toast if stock is low
-                if (newQty < 5) {
-                    Toast.makeText(context, "Alert: Stock is low!", Toast.LENGTH_SHORT).show();
+                // Show a warning toast if stock is low (uses shared threshold from preferences)
+                int threshold = Prefs.getThreshold(context);
+                if (newQty < threshold) {
+                    Toast.makeText(context, "Alert: Stock is low (below " + threshold + ")!", Toast.LENGTH_SHORT).show();
 
                     // Uncomment below if real SMS functionality is enabled (requires permission)
                     /*
+                    String phone = Prefs.getPhone(context);
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage("1234567890", null,
-                        "Inventory Alert: " + item.getName() + " is below 5 in stock!",
-                        null, null);
+                    smsManager.sendTextMessage(
+                        phone,
+                        null,
+                        "Inventory Alert: " + item.getName() + " is below " + threshold + " in stock!",
+                        null,
+                        null
+                    );
                     */
                 }
             }
