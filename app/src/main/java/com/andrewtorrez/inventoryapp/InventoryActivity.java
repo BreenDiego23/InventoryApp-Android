@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
+/**
+ * This activity serves as the main dashboard for displaying, adding,
+ * and managing inventory items.
+ */
 public class InventoryActivity extends AppCompatActivity {
 
     // UI elements
@@ -21,6 +25,9 @@ public class InventoryActivity extends AppCompatActivity {
     private InventoryItemAdapter adapter;
     private TextView emptyMessage; // Message shown when inventory is empty
 
+    /**
+     * Initializes the UI, sets up button actions, and loads the inventory.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,17 +61,23 @@ public class InventoryActivity extends AppCompatActivity {
         });
     }
 
-    // This method runs every time the activity comes back into focus
+    /**
+     * Refreshes the inventory list when returning from another activity.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         loadInventory(); // Refresh inventory list
     }
 
-    // Loads inventory items from the database and updates the grid view
+    /**
+     * Loads all items from the database, handles the empty state message,
+     * and updates the grid view with an adapter.
+     */
     private void loadInventory() {
         List<InventoryItem> items = dbHelper.getAllItems();
 
+        // Check whether the database returned any results
         if (items.isEmpty()) {
             // No items: hide grid and show message
             inventoryGrid.setVisibility(View.GONE);
@@ -75,6 +88,7 @@ public class InventoryActivity extends AppCompatActivity {
             emptyMessage.setVisibility(View.GONE);
 
             // Set up the adapter and assign it to the grid
+            // The adapter binds the items to the grid UI
             adapter = new InventoryItemAdapter(this, items, dbHelper);
             inventoryGrid.setAdapter(adapter);
         }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Layout for the Inventory screen.
+    Displays the inventory list in a grid, allows adding new items, shows an empty message if no items,
+    and provides a button to notify about low stock via SMS.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,7 +12,7 @@
     android:padding="16dp"
     android:fitsSystemWindows="true"> <!-- Makes sure UI doesn't go under status bar -->
 
-    <!-- Page Title -->
+    <!-- Page Title: Displays the title of the inventory page at the top -->
     <TextView
         android:id="@+id/inventoryTitle"
         android:layout_width="wrap_content"
@@ -19,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Add Item Button -->
+    <!-- Add Item Button: Opens form to add a new inventory item -->
     <Button
         android:id="@+id/addItemButton"
         android:layout_width="wrap_content"
@@ -30,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp" />
 
-    <!-- Inventory Grid -->
+    <!-- Inventory Grid: Shows inventory items in a two-column grid -->
     <GridView
         android:id="@+id/inventoryGrid"
         android:layout_width="0dp"
@@ -45,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Empty inventory message -->
+    <!-- Empty Inventory Message: Shown when there are no inventory items to display -->
     <TextView
         android:id="@+id/emptyMessage"
         android:layout_width="wrap_content"
@@ -59,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Notify Low Stock Button -->
+    <!-- Notify Low Stock Button: Sends SMS notification for items that are low in stock -->
     <Button
         android:id="@+id/smsButton"
         android:layout_width="wrap_content"

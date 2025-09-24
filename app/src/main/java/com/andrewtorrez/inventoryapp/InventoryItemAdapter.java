@@ -55,7 +55,14 @@ public class InventoryItemAdapter extends BaseAdapter {
         TextView itemName = convertView.findViewById(R.id.itemName);
         TextView quantityLabel = convertView.findViewById(R.id.quantityLabel);
         Button deleteButton = convertView.findViewById(R.id.deleteButton);
+        /**
+         * Button to increase the quantity of the item and update the database/UI.
+         */
         Button increaseButton = convertView.findViewById(R.id.increaseButton);
+        /**
+         * Button to decrease the quantity of the item, update the database/UI,
+         * and trigger a low stock warning if the threshold is reached.
+         */
         Button decreaseButton = convertView.findViewById(R.id.decreaseButton);
 
         // Display item name and quantity

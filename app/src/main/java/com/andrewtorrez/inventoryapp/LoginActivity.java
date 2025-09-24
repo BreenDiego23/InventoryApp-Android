@@ -15,6 +15,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, createAccountButton;    // Buttons for login and account creation
     private DatabaseHelper dbHelper;                    // Database helper to handle authentication and data storage
 
+    /**
+     * Initializes the login screen, links UI elements, sets up database helper,
+     * and configures button actions for login and account creation.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

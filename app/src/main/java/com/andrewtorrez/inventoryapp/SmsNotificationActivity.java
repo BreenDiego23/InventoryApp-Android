@@ -25,6 +25,10 @@ public class SmsNotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_notification);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         sendButton = findViewById(R.id.sendSmsButton);
 
         // When the user clicks the "Send SMS" button
@@ -49,7 +53,12 @@ public class SmsNotificationActivity extends AppCompatActivity {
 
         StringBuilder messageBuilder = new StringBuilder(); // Build the message
 
-        // Loop through items to check if any quantity is below 5
+        /**
+         * Loop through each item in the inventory and check if its quantity is below the threshold (currently hardcoded as 5).
+         * If so, add the item and its quantity to the SMS message.
+         * This is important because it alerts the user about items that are low in stock,
+         * allowing timely restocking and preventing stockouts.
+         */
         for (InventoryItem item : items) {
             if (item.getQuantity() < 5) {
                 messageBuilder.append(item.getName())
@@ -91,5 +100,10 @@ public class SmsNotificationActivity extends AppCompatActivity {
                 Toast.makeText(this, "SMS permission denied. Notifications disabled.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

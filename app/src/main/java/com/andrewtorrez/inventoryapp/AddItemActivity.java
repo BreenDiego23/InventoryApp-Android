@@ -7,6 +7,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for adding a new item to the inventory.
+ * Allows the user to input item name and quantity, then saves it to the database.
+ */
 public class AddItemActivity extends AppCompatActivity {
 
     // Declare UI elements and database helper
@@ -20,10 +24,16 @@ public class AddItemActivity extends AppCompatActivity {
         // Set the layout for this activity
         setContentView(R.layout.activity_add_item);  // Must match the corresponding XML layout file
 
+        // Enable the back button in the toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         // Link UI elements to XML components
         itemNameField = findViewById(R.id.itemNameField);
         itemQuantityField = findViewById(R.id.itemQuantityField);
         saveItemButton = findViewById(R.id.saveItemButton);
+        // Initialize the database helper responsible for managing database operations
         dbHelper = new DatabaseHelper(this);  // Initialize the database helper
 
         // Set the button click listener to handle saving an item
@@ -54,7 +64,14 @@ public class AddItemActivity extends AppCompatActivity {
             dbHelper.addItem(newItem);
             Toast.makeText(this, "Item saved", Toast.LENGTH_SHORT).show();
 
+            // Close this activity and return to the inventory screen
             finish(); // Close this activity and return to the inventory screen
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

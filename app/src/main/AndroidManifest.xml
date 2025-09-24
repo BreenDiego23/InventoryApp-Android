@@ -1,10 +1,14 @@
+<!-- AndroidManifest.xml declares essential information about the app to the Android build tools, the Android operating system, and Google Play. -->
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permission to send SMS messages -->
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Telephony feature, not required but used if available -->
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
+    <!-- Declares global application settings -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,7 +20,7 @@
         android:theme="@style/Theme.InventoryApp"
         tools:targetApi="31">
 
-        <!-- Launcher Activity -->
+        <!-- Login screen activity -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -26,9 +30,11 @@
             </intent-filter>
         </activity>
 
-        <!-- SMS Notification Activity -->
+        <!-- Inventory screen activity -->
         <activity android:name=".InventoryActivity" />
+        <!-- Add item screen activity -->
         <activity android:name=".AddItemActivity" />
+        <!-- SMS notification screen activity -->
         <activity android:name=".SmsNotificationActivity" />
 
     </application>

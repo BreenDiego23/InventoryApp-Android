@@ -114,23 +114,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Add a new user to the users table
+    /**
+     * Inserts a new user record into the users table.
+     * Stores the provided username and password credentials.
+     *
+     * @param username The username to be stored.
+     * @param password The password to be stored.
+     */
     public void addUser(String username, String password) {
+        // Open a writable database to allow data insertion
         SQLiteDatabase db = this.getWritableDatabase();
+        // Prepare the values to be inserted
         ContentValues values = new ContentValues();
         values.put(USERNAME, username);
         values.put(PASSWORD, password);
+        // Insert the new user record into the users table
         db.insert(TABLE_USERS, null, values);
         db.close();
     }
 
-    // Check if a user exists with the given username and password
+    /**
+     * Validates login credentials by checking if the username and password
+     * exist in the users table.
+     *
+     * @param username The username to check.
+     * @param password The password to check.
+     * @return true if credentials are valid, false otherwise.
+     */
     public boolean checkUser(String username, String password) {
+        // Open a readable database for querying
         SQLiteDatabase db = this.getReadableDatabase();
+        // Execute a query to check for matching username and password
         String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
                 + USERNAME + "=? AND " + PASSWORD + "=?";
         Cursor cursor = db.rawQuery(query, new String[]{username, password});
+        // Check if a matching row exists (i.e., valid credentials)
         boolean result = cursor.moveToFirst(); // True if a match is found
+        // Close resources to avoid memory leaks
         cursor.close();
         db.close();
         return result;
